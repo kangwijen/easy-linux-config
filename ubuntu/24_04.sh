@@ -6,6 +6,12 @@
 set -e  # Exit on error
 
 echo "Starting Ubuntu 24.04 package installation..."
+
+# Pre-configure ttf-mscorefonts-installer to accept license non-interactively
+# This prevents the interactive popup during package installation
+echo "Pre-configuring ttf-mscorefonts-installer to prevent interactive prompts..."
+echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula boolean true" | sudo debconf-set-selections
+
 echo "Updating package lists..."
 
 # Update package lists
