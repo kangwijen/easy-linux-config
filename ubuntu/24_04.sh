@@ -158,6 +158,13 @@ fi
 # Install Docker Engine (via official Docker repository)
 echo "Installing Docker..."
 if ! command -v docker &> /dev/null; then
+    # Remove any conflicting packages (if they exist)
+    CONFLICTING_PKGS=$(dpkg --get-selections docker.io docker-compose docker-compose-v2 docker-doc podman-docker containerd runc 2>/dev/null | cut -f1 | grep -v "^$" || true)
+    if [ -n "$CONFLICTING_PKGS" ]; then
+        echo "Removing conflicting packages: $CONFLICTING_PKGS"
+        sudo DEBIAN_FRONTEND=noninteractive apt remove -y $CONFLICTING_PKGS 2>/dev/null || true
+    fi
+
     # Remove any existing Docker repository entries
     sudo rm -f /etc/apt/sources.list.d/docker.list /etc/apt/sources.list.d/docker.sources 2>/dev/null || true
     
@@ -166,7 +173,7 @@ if ! command -v docker &> /dev/null; then
     sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
     sudo chmod a+r /etc/apt/keyrings/docker.asc
     
-    # Add Docker repository using the new .sources format
+    # Add Docker repository to the apt sources
     sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
 Types: deb
 URIs: https://download.docker.com/linux/ubuntu
