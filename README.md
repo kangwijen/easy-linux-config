@@ -10,10 +10,14 @@ Scripts are organized by OS distribution and version:
 
 ## Usage
 
-Run the appropriate script for your Linux distribution and version:
+Download and run the script directly:
 
 ```bash
-bash ubuntu/24_04.sh
+# Using wget
+wget -O- https://raw.githubusercontent.com/kangwijen/easy-linux-config/main/ubuntu/24_04.sh | bash
+
+# Or using curl
+curl -fsSL https://raw.githubusercontent.com/kangwijen/easy-linux-config/main/ubuntu/24_04.sh | bash
 ```
 
 ## What's Installed
