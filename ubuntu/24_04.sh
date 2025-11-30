@@ -111,9 +111,6 @@ echo "Installing network tools..."
 sudo apt install -y \
     dnsutils \
     whois \
-    nmap \
-    tcpdump \
-    wireshark-common
 
 # Install terminal enhancements
 echo "Installing terminal enhancements..."
@@ -200,11 +197,11 @@ echo "Installed packages include:"
 echo "  - Build tools (gcc, make, cmake)"
 echo "  - Development tools (git, curl, wget)"
 echo "  - Text editors (vim, nano)"
-echo "  - System utilities (htop, tree, unzip)"
-echo "  - Network tools (net-tools, ping, nmap)"
-echo "  - Multimedia codecs"
+echo "  - System utilities (htop, tree, unzip, net-tools, ping, traceroute, netcat)"
+echo "  - Network tools (dnsutils, whois)"
+echo "  - Multimedia codecs (ffmpeg)"
 echo "  - Python and Node.js development tools"
 echo "  - Docker Engine with plugins"
-echo "  - Terminal enhancements"
+echo "  - Terminal enhancements (zsh)"
 echo ""
 
