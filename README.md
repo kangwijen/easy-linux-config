@@ -26,14 +26,14 @@ Each script installs a comprehensive set of packages organized by category:
 
 ### Build & Development Tools
 - Build essentials (gcc, g++, make, cmake)
-- Version control (git, git-lfs)
+- Version control (git)
 - Package managers (curl, wget)
 - Text editors (vim, nano)
 
 ### System Utilities
 - Process monitoring (htop)
-- File management (tree, unzip, zip, tar, ranger, mc, ncdu)
-- Modern CLI tools (bat, fd-find, ripgrep, fzf, jq)
+- File management (tree, unzip, zip, tar)
+- JSON processor (jq)
 - Terminal multiplexers (tmux, screen)
 - Remote access (SSH client/server, rsync)
 
@@ -52,5 +52,4 @@ Each script installs a comprehensive set of packages organized by category:
 - FFmpeg and additional codecs
 
 ### Terminal Enhancements
-- Alternative shells (zsh, fish)
-- Powerline fonts and themes
+- Alternative shell (zsh)

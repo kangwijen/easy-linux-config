@@ -21,7 +21,6 @@ sudo apt install -y \
     build-essential \
     cmake \
     git \
-    git-lfs \
     curl \
     wget \
     vim \
@@ -48,10 +47,6 @@ sudo apt install -y \
     traceroute \
     netcat-openbsd \
     jq \
-    batcat \
-    fd-find \
-    ripgrep \
-    fzf \
     tmux \
     screen \
     rsync \
@@ -74,20 +69,10 @@ sudo apt install -y \
     tcpdump \
     wireshark-common
 
-# Install file managers and utilities
-echo "Installing file management tools..."
-sudo apt install -y \
-    ranger \
-    mc \
-    ncdu
-
 # Install terminal enhancements
 echo "Installing terminal enhancements..."
 sudo apt install -y \
-    zsh \
-    fish \
-    powerline \
-    fonts-powerline
+    zsh
 
 # Install Python development tools
 echo "Installing Python development tools..."
