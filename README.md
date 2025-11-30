@@ -1,2 +1,52 @@
 # Easy Linux Configuration
 
+A collection of installation and configuration scripts organized by Linux distribution and version.
+
+## Structure
+
+Scripts are organized by OS distribution and version:
+- `ubuntu` - Common packages installation for Ubuntu
+- `debian` - Common packages installation for Debian
+
+## Usage
+
+Run the appropriate script for your Linux distribution and version:
+
+```bash
+bash ubuntu/24_04.sh
+```
+
+## What's Installed
+
+Each script installs a comprehensive set of packages organized by category:
+
+### Build & Development Tools
+- Build essentials (gcc, g++, make, cmake)
+- Version control (git, git-lfs)
+- Package managers (curl, wget)
+- Text editors (vim, nano)
+
+### System Utilities
+- Process monitoring (htop)
+- File management (tree, unzip, zip, tar, ranger, mc, ncdu)
+- Modern CLI tools (bat, fd-find, ripgrep, fzf, jq)
+- Terminal multiplexers (tmux, screen)
+- Remote access (SSH client/server, rsync)
+
+### Network Tools
+- Network utilities (net-tools, ping, traceroute, netcat)
+- Network analysis (nmap, tcpdump, wireshark-common)
+- DNS tools (dnsutils, whois)
+
+### Development Environments
+- **Python**: Python 3 with pip, venv, and development headers
+- **Node.js**: Node.js 24.x via nvm (Node Version Manager) with npm
+- **Docker**: Docker Engine with CLI, containerd, Buildx, and Compose plugins
+
+### Multimedia
+- Ubuntu restricted extras
+- FFmpeg and additional codecs
+
+### Terminal Enhancements
+- Alternative shells (zsh, fish)
+- Powerline fonts and themes
