@@ -55,10 +55,7 @@ sudo apt install -y \
 
 # Install multimedia codecs
 echo "Installing multimedia codecs..."
-echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | sudo debconf-set-selections
 sudo apt install -y \
-    ubuntu-restricted-extras \
-    libavcodec-extra \
     ffmpeg
 
 # Install network and internet tools
