@@ -7,19 +7,61 @@ set -e  # Exit on error
 
 echo "Starting Ubuntu 24.04 package installation..."
 
-# Pre-configure ttf-mscorefonts-installer to accept license non-interactively
-# This prevents the interactive popup during package installation
-echo "Pre-configuring ttf-mscorefonts-installer to prevent interactive prompts..."
-echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula boolean true" | sudo debconf-set-selections
+# Set non-interactive frontend to prevent any interactive prompts
+export DEBIAN_FRONTEND=noninteractive
+
+# Pre-configure common packages that require interactive input
+echo "Pre-configuring packages to prevent interactive prompts..."
+echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | sudo debconf-set-selections
+
+# Find and handle any packages in broken or half-configured states
+echo "Checking for broken or problematic packages..."
+BROKEN_PACKAGES=$(dpkg -l | awk '/^..r|^..iU|^..iF/ {print $2}' | grep -v "^$" || true)
+
+if [ -n "$BROKEN_PACKAGES" ]; then
+    echo "Found packages requiring attention: $BROKEN_PACKAGES"
+    # Fix any broken package states first
+    sudo dpkg --configure -a 2>/dev/null || true
+    
+    # Remove problematic packages and their cached data
+    for pkg in $BROKEN_PACKAGES; do
+        echo "Removing package and cached data for: $pkg"
+        # Remove the package
+        sudo DEBIAN_FRONTEND=noninteractive apt-get remove -y --purge "$pkg" 2>/dev/null || true
+        # Remove cached download data
+        sudo rm -rf "/var/lib/update-notifier/package-data-downloads/partial/${pkg}"* 2>/dev/null || true
+        sudo rm -rf "/var/lib/update-notifier/package-data-downloads/${pkg}"* 2>/dev/null || true
+        sudo rm -rf "/tmp/${pkg}"* 2>/dev/null || true
+        # Remove package info files
+        sudo rm -rf "/var/lib/dpkg/info/${pkg}."* 2>/dev/null || true
+        # Remove from debconf database
+        echo "$pkg" | sudo debconf-communicate purge 2>/dev/null || true
+    done
+fi
+
+# Clean up general apt cache and temporary files
+echo "Cleaning up apt cache and temporary files..."
+sudo rm -rf /var/lib/update-notifier/package-data-downloads/partial/* 2>/dev/null || true
+sudo rm -rf /tmp/apt* 2>/dev/null || true
+sudo rm -rf /tmp/*.deb 2>/dev/null || true
+sudo rm -rf /var/cache/apt/archives/partial/* 2>/dev/null || true
+
+# Clean up debconf database entries for removed packages
+echo "Cleaning up debconf database..."
+sudo sed -i '/^ttf-mscorefonts-installer/d' /var/cache/debconf/config.dat 2>/dev/null || true
+sudo sed -i '/^ttf-mscorefonts-installer/d' /var/cache/debconf/passwords.dat 2>/dev/null || true
+
+# Re-apply debconf settings for known problematic packages
+echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | sudo debconf-set-selections
 
 echo "Updating package lists..."
 
 # Update package lists
-sudo apt update
+sudo DEBIAN_FRONTEND=noninteractive apt update
 
 # Upgrade existing packages
 echo "Upgrading existing packages..."
-sudo apt upgrade -y
+sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
 
 # Install build essentials and development tools
 echo "Installing build essentials and development tools..."
