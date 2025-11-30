@@ -19,9 +19,6 @@ sudo apt upgrade -y
 echo "Installing build essentials and development tools..."
 sudo apt install -y \
     build-essential \
-    gcc \
-    g++ \
-    make \
     cmake \
     git \
     git-lfs \
@@ -51,14 +48,13 @@ sudo apt install -y \
     traceroute \
     netcat-openbsd \
     jq \
-    bat \
+    batcat \
     fd-find \
     ripgrep \
     fzf \
     tmux \
     screen \
     rsync \
-    ssh \
     openssh-client \
     openssh-server
 
