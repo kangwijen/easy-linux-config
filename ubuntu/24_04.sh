@@ -63,6 +63,10 @@ sudo DEBIAN_FRONTEND=noninteractive apt update
 echo "Upgrading existing packages..."
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
 
+# Remove orphaned packages that are no longer needed
+echo "Removing orphaned packages..."
+sudo DEBIAN_FRONTEND=noninteractive apt autoremove -y
+
 # Install build essentials and development tools
 echo "Installing build essentials and development tools..."
 sudo apt install -y \
@@ -154,19 +158,25 @@ fi
 # Install Docker Engine (via official Docker repository)
 echo "Installing Docker..."
 if ! command -v docker &> /dev/null; then
+    # Remove any existing Docker repository entries
+    sudo rm -f /etc/apt/sources.list.d/docker.list /etc/apt/sources.list.d/docker.sources 2>/dev/null || true
+    
     # Add Docker's official GPG key
     sudo install -m 0755 -d /etc/apt/keyrings
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.asc
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
     sudo chmod a+r /etc/apt/keyrings/docker.asc
     
-    # Add Docker repository
-    echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-      $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
-      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    # Add Docker repository using the new .sources format
+    sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
     
     # Update package index
-    sudo apt update
+    sudo DEBIAN_FRONTEND=noninteractive apt update
     
     # Install Docker Engine, CLI, containerd, and plugins
     sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
