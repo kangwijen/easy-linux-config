@@ -49,7 +49,7 @@ sudo apt install -y \
     net-tools \
     iputils-ping \
     traceroute \
-    netcat \
+    netcat-openbsd \
     jq \
     bat \
     fd-find \
